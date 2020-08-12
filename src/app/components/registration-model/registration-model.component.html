@@ -1,0 +1,22 @@
+<ng-template #content let-modal>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Register</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="on_submit()">
+      <div class="form-group">
+        <input formControlName="username" class="form-control-static" type="text">
+        <br/>
+        <button type="submit" class="btn btn-lg btn-outline-primary">Sign Up</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<button id='registration-btn' type="button" class="btn nav-justified nav-tabs" (click)="open(content)">Register</button>

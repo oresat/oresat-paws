@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "oresat-paws"
+    }
+  },
+  "defaultProject": "oresat-paws",
+  "cli": {
+    "analytics": false
+  }
 }

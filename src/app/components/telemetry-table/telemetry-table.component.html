@@ -1,0 +1,26 @@
+<table id='telem-table' class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Telemetry Id</th>
+    <th scope="col" sortable="received_at" (sort)="onSort($event)">Received</th>
+    <th scope="col" sortable="invalid_count" (sort)="onSort($event)">Invalid Count</th>
+    <th scope="col" sortable="sensor_used" (sort)="onSort($event)">Sensor Used</th>
+    <th scope="col" sortable="vector_body_1" (sort)="onSort($event)">Vector Body 1</th>
+    <th scope="col" sortable="vector_body_2" (sort)="onSort($event)">Vector Body 2</th>
+    <th scope="col" sortable="vector_body_3" (sort)="onSort($event)">Vector Body 3</th>
+    <th scope="col" sortable="vector_valid" (sort)="onSort($event)">Vector Is Valid</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of telemetry">
+    <th scope="row">{{ entry.id | number }}</th>
+    <td>{{ entry.received_at | date: 'medium' }}</td>
+    <td>{{ entry.invalid_count }}</td>
+    <td>{{ entry.sensor_used }}</td>
+    <td>{{ entry.vector_body_1 }}</td>
+    <td>{{ entry.vector_body_2 }}</td>
+    <td>{{ entry.vector_body_3 }}</td>
+    <td>{{ entry.vector_valid }}</td>
+  </tr>
+  </tbody>
+</table>

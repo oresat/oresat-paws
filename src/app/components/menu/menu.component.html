@@ -1,0 +1,4 @@
+<div class="nav">
+  <a routerLink={{entry.url}} routerLinkActive="active" routerLinkActiveOptions="{exact: true}" *ngFor="let entry of entries"><button class="btn nav-justified nav-tabs">{{ entry.name }}</button></a>
+  <registration-modal></registration-modal>
+</div>

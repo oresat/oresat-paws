@@ -1,0 +1,47 @@
+<ngb-tabset [destroyOnHide]="false">
+  <ngb-tab title="Get All Requests">
+    <ng-template ngbTabContent>
+      <form [formGroup]="get_all_reqests_form" (ngSubmit)="get_all_reqests()">
+        <h1>Get All Requests</h1>
+        <div class="form-group">
+          <button type="submit" class="btn btn-lg btn-outline-primary">Go</button>
+        </div>
+      </form>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab title="Get One Request" [disabled]="false">
+    <ng-template ngbTabContent>
+      <form [formGroup]="get_reqest_form" (ngSubmit)="get_reqest()">
+        <h1>Get A Request</h1>
+        <div class="form-group">
+          <input formControlName="request_id" class="form-control-static" type="text" placeholder="Request ID">
+          <button type="submit" class="btn btn-lg btn-outline-primary">Go</button>
+        </div>
+      </form>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab title="Submit A Request" [disabled]="false">
+    <ng-template ngbTabContent>
+      <form id='pass-form' [formGroup]="get_passes_form" (ngSubmit)="get_passes()">
+        <h1>Get Available Passes</h1>
+        <div class="form-group">
+          <input formControlName="latitude" class="form-control-static" type="number">
+          <input formControlName="longitude" class="form-control-static" type="number">
+          <input type="submit" value="Get Passes" class="btn btn-lg btn-outline-primary" />
+          <input type="reset" value="Reset"  class="btn-warning btn-lg" />
+        </div>
+      </form>
+
+      <form id='request-form' [formGroup]="get_passes_form" (ngSubmit)="get_passes()">
+        <h1>Get Available Passes</h1>
+        <div class="form-group">
+          <p *ngFor="let pass of passes">({{pass.latitude}}, {{pass.longitude}}) {{pass.elevation_m}} [{{pass.aos_utc}}] -> [{{pass.los_utc}}]</p>
+          <!-- <input *ngFor="let pass of passes" formControlName="pass" class="form-control-static" type="radio" value="pass"> -->
+          <input type="submit" value="Submit Request" class="btn btn-lg btn-outline-primary" />
+        </div>
+      </form>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
