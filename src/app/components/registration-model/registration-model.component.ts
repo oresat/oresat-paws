@@ -35,11 +35,19 @@ export class RegistrationModel implements OnInit {
   }
 
   on_submit(): void {
+    // Get the username input and submit it to ULTRA
     const username = this.form.get('username').value;
     console.log(`Registering user: ${username}`);
     this.modal_service.dismissAll();
-    this.ultra_service.post_user(username);
-    this.router.navigate(['/a'])
-    this.router.navigate(['/'])
+    this.ultra_service.post_user(username).subscribe(
+      data => {
+          console.log(`Got data back from registration: ${data}`);
+          // Reload the page
+          window.location.reload();
+      },
+      error => {
+        console.error(`Failed to register the user with ULTRA: ${error}`);
+      }
+    );
   }
 }

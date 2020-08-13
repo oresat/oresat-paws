@@ -1,9 +1,15 @@
-<p class='jumbotron lead'>Hello {{ username }}</p>
+<div *ngIf="no_token">
+  <p class='jumbotron lead'>Hello, you don't seem to have a API token yet.
+  <br/>Be sure to register with ULTRA first, so you can start making OreSat Live requests.</p>
+</div>
 
-<button type="button" class="btn-danger btn-sm disabled" name="reveal" id="reveal" (click)='toggle_reveal()'>Click to {{ tstring() }} token</button>
+<div *ngIf="!no_token">
+  <p class='jumbotron lead'>Hello {{ username }}.</p>
 
+  <button type="button" class="btn-danger btn-sm disabled" (click)='toggle_reveal()'>Click to {{ tstring() }} token</button>
 
-<div *ngIf="token_exists" id="token">
-  <code class='panel text-danger'>{{token}}</code>
-  <i><p class='text-danger'>Don't share this with anyone, not even your mother.</p></i>
+  <div id="token-display">
+    <code class='panel text-danger'>{{token}}</code>
+    <i><p class='text-danger'>Don't share this with anyone, not even your mother.</p></i>
+  </div>
 </div>

@@ -61,13 +61,14 @@ export class UltraService {
     return this.http.get<User>(uri, {'headers': headers, observe: 'body'});
   }
 
-  post_user(username: string): void {
+  post_user(username: string): Observable<User> {
     const uri = `${environment.ultra_url}/user`;
     const request = this.http.post<User> (uri, {user_id: username, observe: 'body'});
     request.subscribe((data) => {
       this.cookie_service.set('token', data.token);
       this.cookie_service.set('username', data.user_id);
     });
+    return request;
   }
 
   get_all_requests(token: string): Observable<Array<any>> {

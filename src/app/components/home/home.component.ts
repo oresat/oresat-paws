@@ -9,21 +9,15 @@ import { UltraService } from 'src/app/services/ultra.service';
 })
 export class HomePage implements OnInit {
   token: string;
-  username: string;
-  token_exists: boolean;
+  username: string = 'N/A';
+  no_token: boolean = true;
   reveal_token: boolean = false;
 
   constructor(private ultra_service: UltraService,
               private el: ElementRef) {
     this.username = this.ultra_service.get_cached_username();
     this.token = this.ultra_service.get_cached_token();
-    this.token_exists = this.token != '' && this.token != null && this.token != undefined;
-
-    console.log(`Username: ${this.username}`)
-
-    if(this.username == '' || this.username == null || this.username == undefined) {
-      this.username = ", please get a token before making any requests."
-    }
+    this.no_token = this.token === '' || this.token === null || this.token === undefined;
   }
 
   ngOnInit(): void {}
@@ -39,7 +33,7 @@ export class HomePage implements OnInit {
 
   toggle_reveal(): void {
     this.reveal_token = !this.reveal_token;
-    const hide_element = this.el.nativeElement.querySelector('#token');
+    const hide_element = this.el.nativeElement.querySelector('#token-display');
 
     if(this.reveal_token) {
       hide_element.style.display = 'block';
