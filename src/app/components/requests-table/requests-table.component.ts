@@ -8,7 +8,7 @@ import { UltraService, Request } from 'src/app/services/ultra.service';
 })
 
 export class RequestsTable implements OnInit {
-  requests: Array<Request>;
+  @Input() requests: Array<Request>;
   loaded: boolean;
 
   constructor(private ultra_service: UltraService) {

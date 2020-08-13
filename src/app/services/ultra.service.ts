@@ -14,14 +14,14 @@ export interface Pass {
   latitude: number,
   longitude: number,
   elevation_m: number,
+  horizon_deg: number,
   aos_utc: Date,
   los_utc: Date
 }
 
 export interface Request {
-  pass: Pass,
-  is_approved: boolean,
-  is_sent: boolean
+  request_token: string,
+  pass_data: Pass
 }
 
 export interface Telemetry {
@@ -70,7 +70,7 @@ export class UltraService {
     });
   }
 
-  get_all_requests(token: string): Observable<Array<Request>> {
+  get_all_requests(token: string): Observable<Array<any>> {
     const uri = `${environment.ultra_url}/request`;
     const headers = new HttpHeaders().set('token', token);
     return this.http.get<Array<Request>>(uri, {'headers': headers, observe: 'body'});

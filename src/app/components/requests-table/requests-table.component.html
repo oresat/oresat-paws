@@ -2,20 +2,23 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">Latitude</th>
+      <th scope="col">Longitude</th>
+      <th scope="col">Elevation</th>
+      <th scope="col">AOS</th>
+      <th scope="col">LOS</th>
+      <th scope="col">Approved</th>
+      <th scope="col">Sent</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr *ngFor="let request of requests; index as i">
-      <th scope="row">{{ i + 1 }}</th>
-      <!-- <td>{{ request.pass.latitude | number }}</td>
-      <td>{{ request.pass.longitude | number }}</td>
-      <td>{{ request.pass.elevation_m | number }}</td>
-      <td>{{ request.pass.aos_utc | date }}</td>
-      <td>{{ request.pass.los_utc | date }}</td> -->
-      <td>{{ request.is_approved }}</td>
-      <td>{{ request.is_sent }}</td>
+    <tr *ngFor="let request of requests">
+      <td>{{ request.pass_data.latitude | number }}</td>
+      <td>{{ request.pass_data.longitude | number }}</td>
+      <td>{{ request.pass_data.elevation_m | number }}</td>
+      <td>{{ request.pass_data.aos_utc | date: 'long' }}</td>
+      <td>{{ request.pass_data.los_utc | date: 'long' }}</td>
     </tr>
     </tbody>
   </table>
@@ -23,5 +26,5 @@
 </div>
 
 <div *ngIf="!loaded">
-  <p>Whoops, no requests here... Try refreshing the page?</p>
+  <p>Whoops, no requests here... Try refreshing the page or submutting a request.</p>
 </div>
