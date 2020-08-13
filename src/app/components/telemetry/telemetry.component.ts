@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UltraService } from 'src/app/services/ultra.service';
+import { UltraService, Telemetry } from 'src/app/services/ultra.service';
 
 @Component({
   selector: 'telemetry-page',
@@ -8,7 +8,7 @@ import { UltraService } from 'src/app/services/ultra.service';
 })
 
 export class TelemetryPage implements OnInit {
-  telemetry: Array<any>;
+  telemetry: Array<Telemetry>;
 
   constructor(private ultra: UltraService){
     this.ultra.get_telemetry().subscribe(
@@ -17,7 +17,7 @@ export class TelemetryPage implements OnInit {
       },
       error => {
         this.telemetry = [],
-        console.error(error)
+        console.error(`Failed to get telemetry: ${error}`);
       }
     );
   }

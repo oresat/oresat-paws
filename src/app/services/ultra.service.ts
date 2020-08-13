@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/ultra';
 import { CookieService } from 'ngx-cookie-service';
 
-interface TokenResponse {
+export interface User {
   message: string,
   user_id: string,
   token: string
@@ -18,92 +18,81 @@ export interface Pass {
   los_utc: Date
 }
 
+export interface Request {
+  pass: Pass,
+  is_approved: boolean,
+  is_sent: boolean
+}
+
+export interface Telemetry {
+  id: number,
+  received_at: Date,
+  invalid_count: number,
+  sensor_used: number,
+  vector_body_1: number,
+  vector_body_2: number,
+  vector_body_3: number,
+  vector_valid: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
 
 export class UltraService {
-  token: string = null;
-  username: string = null;
-  requests: Array<Pass>;
+  constructor(private http: HttpClient, private cookie_service: CookieService){}
 
-  constructor(private http: HttpClient,
-              private cookie_service: CookieService){
-    this.username = this.fetch_username();
-    this.token = this.fetch_token();
+  get_cached_username(): string {
+    return this.cookie_service.get('username');
   }
 
-  fetch_username(): string {
-    if(this.username === null && this.cookie_service.check('username')){
-       this.username = this.cookie_service.get('username');
-    }
-    return this.username;
+  get_cached_token(): string {
+    return this.cookie_service.get('token');
   }
 
-  fetch_token(): string {
-    if(this.token === null && this.cookie_service.check('token')){
-       this.token = this.cookie_service.get('token');
-    }
-    else {
-      this.token = null;
-    }
-    return this.token;
-  }
-
-  store_user(username: string, token: string): void {
-    console.log(`Storing to cookies: ${username} ${token}`);
-    this.cookie_service.set('username', username);
-    this.cookie_service.set('token', token);
-    this.username = username;
-    this.token = token;
-  }
-
-  get_telemetry() : Observable<any> {
+  get_telemetry(): Observable<Array<Telemetry>> {
     const uri = `${environment.ultra_url}/telemetry`;
-    return this.http.get(uri, {observe: 'body'});
+    return this.http.get<Array<Telemetry>>(uri, {observe: 'body'});
   }
 
-  get_user(): Observable<any> {
+  get_user(token: string): Observable<User> {
     const uri = `${environment.ultra_url}/user`;
-    const headers = new HttpHeaders().set('token', this.token);
-    return this.http.get(uri, {'headers': headers, observe: 'body'});
+    const headers = new HttpHeaders().set('token', token);
+    return this.http.get<User>(uri, {'headers': headers, observe: 'body'});
   }
 
-  post_new_user(username: string): void {
+  post_user(username: string): void {
     const uri = `${environment.ultra_url}/user`;
-    const request = this.http.post<TokenResponse> (uri, {user_id: username, observe: 'body'});
+    const request = this.http.post<User> (uri, {user_id: username, observe: 'body'});
     request.subscribe((data) => {
-      this.token = data.token;
-      this.username = data.user_id;
-      this.store_user(data.user_id, data.token);
+      this.cookie_service.set('token', data.token);
+      this.cookie_service.set('username', data.user_id);
     });
   }
 
-  get_all_requests(): Array<Pass> {
+  get_all_requests(token: string): Observable<Array<Request>> {
     const uri = `${environment.ultra_url}/request`;
-    const headers = new HttpHeaders().set('token', this.token);
-    const response = this.http.get<Array<Pass>>(uri, {'headers': headers, observe: 'body'});
-    response.subscribe((response) => {
-      this.requests = response;
-    });
-    return this.requests;
+    const headers = new HttpHeaders().set('token', token);
+    return this.http.get<Array<Request>>(uri, {'headers': headers, observe: 'body'});
   }
 
-  post_new_requests(): void {
+  post_request(token: string, requested_pass: Pass): Observable<any> {
     const uri = `${environment.ultra_url}/request`;
-    const headers = new HttpHeaders().set('token', this.token);
-    const request = this.http.post(uri, {'headers': headers, observe: 'body'});
-    // TODO: Finish this
+    const headers = new HttpHeaders().set('token', token);
+    return this.http.post(uri, {latitude: requested_pass.latitude,
+                                longitude: requested_pass.longitude,
+                                elevation_m: requested_pass.elevation_m,
+                                aos_utc: requested_pass.aos_utc,
+                                los_utc: requested_pass.los_utc,
+                                observe: 'body'},
+                                {headers});
   }
 
-  get_passes(latitude: number, longitude: number): Array<Pass> {
+  get_passes(latitude: number, longitude: number): Observable<Array<Pass>> {
     const uri = `${environment.ultra_url}/passes`;
     const parameters = new HttpParams()
                        .append('latitude', latitude.toString())
                        .append('longitude', longitude.toString());
-    this.http.get<Array<Pass>>(`${uri}?${parameters}`).subscribe((data) => {
-      this.requests = data;
-    });
-    return this.requests;
+    return this.http.get<Array<Pass>>(`${uri}?${parameters}`);
   }
 }

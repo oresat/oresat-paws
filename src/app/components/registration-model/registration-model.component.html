@@ -19,4 +19,6 @@
   </div>
 </ng-template>
 
-<button id='registration-btn' type="button" class="btn nav-justified nav-tabs" (click)="open(content)">Register</button>
+<div *ngIf="show_button">
+  <button id='registration-btn' type="button" class="btn nav-justified nav-tabs" (click)="open(content)">Register</button>
+</div>

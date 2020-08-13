@@ -1,47 +1,46 @@
 <ngb-tabset [destroyOnHide]="false">
-  <ngb-tab title="Get All Requests">
+  <ngb-tab title="Requests">
     <ng-template ngbTabContent>
-      <form [formGroup]="get_all_reqests_form" (ngSubmit)="get_all_reqests()">
-        <h1>Get All Requests</h1>
-        <div class="form-group">
-          <button type="submit" class="btn btn-lg btn-outline-primary">Go</button>
-        </div>
-      </form>
+      <requests-table></requests-table>
     </ng-template>
   </ngb-tab>
 
-  <ngb-tab title="Get One Request" [disabled]="false">
+  <ngb-tab title="Submit A Request">
     <ng-template ngbTabContent>
-      <form [formGroup]="get_reqest_form" (ngSubmit)="get_reqest()">
-        <h1>Get A Request</h1>
-        <div class="form-group">
-          <input formControlName="request_id" class="form-control-static" type="text" placeholder="Request ID">
-          <button type="submit" class="btn btn-lg btn-outline-primary">Go</button>
-        </div>
-      </form>
-    </ng-template>
-  </ngb-tab>
+      <div *ngIf="form_position == 0">
+        <h1>Where are you at?</h1>
 
-  <ngb-tab title="Submit A Request" [disabled]="false">
-    <ng-template ngbTabContent>
-      <form id='pass-form' [formGroup]="get_passes_form" (ngSubmit)="get_passes()">
-        <h1>Get Available Passes</h1>
-        <div class="form-group">
-          <input formControlName="latitude" class="form-control-static" type="number">
-          <input formControlName="longitude" class="form-control-static" type="number">
-          <input type="submit" value="Get Passes" class="btn btn-lg btn-outline-primary" />
-          <input type="reset" value="Reset"  class="btn-warning btn-lg" />
-        </div>
-      </form>
+        <form [formGroup]='location_form' (ngSubmit)='get_passes()'>
+          <label>
+            Latitude:
+            <input type="number" formControlName='latitude'>
+          </label>
 
-      <form id='request-form' [formGroup]="get_passes_form" (ngSubmit)="get_passes()">
-        <h1>Get Available Passes</h1>
-        <div class="form-group">
-          <p *ngFor="let pass of passes">({{pass.latitude}}, {{pass.longitude}}) {{pass.elevation_m}} [{{pass.aos_utc}}] -> [{{pass.los_utc}}]</p>
-          <!-- <input *ngFor="let pass of passes" formControlName="pass" class="form-control-static" type="radio" value="pass"> -->
-          <input type="submit" value="Submit Request" class="btn btn-lg btn-outline-primary" />
-        </div>
-      </form>
+          <label>
+            Longitude:
+            <input type="number" formControlName='longitude'>
+          </label>
+
+          <input class="class=btn btn-primary" type="submit" value="Get available times">
+        </form>
+      </div>
+
+      <div *ngIf="form_position == 1">
+        <h1>When would you like to see OreSat?</h1>
+
+        <form [formGroup]='time_form' (ngSubmit)='post_reqest()'>
+          <label>
+            Available Orbital Passes:
+
+            <i>These are a list of times OreSat will be over your area.</i>
+            <select aria-labelledby="dropdownBasic1" formControlName='pass'>
+              <option *ngFor="let pass of available_passes; let i = index">{{i + 1}}: {{pass.aos_utc | date: 'short'}} - {{ pass.los_utc | date: 'h:mm a' }}</option>
+            </select>
+
+          </label>
+          <input class='btn btn-success' type="submit" value='Request Orbital Pass'>
+        </form>
+      </div>
     </ng-template>
   </ngb-tab>
 </ngb-tabset>

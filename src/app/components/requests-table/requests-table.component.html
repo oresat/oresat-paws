@@ -1,0 +1,27 @@
+<div *ngIf="loaded">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let request of requests; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <!-- <td>{{ request.pass.latitude | number }}</td>
+      <td>{{ request.pass.longitude | number }}</td>
+      <td>{{ request.pass.elevation_m | number }}</td>
+      <td>{{ request.pass.aos_utc | date }}</td>
+      <td>{{ request.pass.los_utc | date }}</td> -->
+      <td>{{ request.is_approved }}</td>
+      <td>{{ request.is_sent }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div *ngIf="!loaded">
+  <p>Whoops, no requests here... Try refreshing the page?</p>
+</div>

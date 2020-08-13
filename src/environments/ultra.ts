@@ -1,3 +1,3 @@
 export const environment = {
-  ultra_url: 'http://localhost:5000'
+  ultra_url: 'https://ultra.mandatoryfun.xyz'
 }

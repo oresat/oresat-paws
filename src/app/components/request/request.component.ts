@@ -1,17 +1,7 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UltraService, Pass } from 'src/app/services/ultra.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
-// interface Request {
-//   uid: string,
-//   user_token: string,
-//   is_approved: boolean,
-//   is_sent: boolean,
-//   pass_uid: number,
-//   created_date: Date,
-//   updated_date: Date,
-//   observation_type: string
-// }
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'request-page',
@@ -20,57 +10,73 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 
 export class RequestPage implements OnInit {
-  get_reqest_form: FormGroup;
-  get_all_reqests_form: FormGroup;
-  get_passes_form: FormGroup;
-  passes: Array<any>;
-  requests: Array<Pass>;
+  requests_form: FormGroup;
+  location_form: FormGroup;
+  time_form: FormGroup;
+  form_position: number;
+
+  available_passes: Array<Pass>;
 
 
   constructor(private ultra_service: UltraService,
-              private form_builder: FormBuilder,
-              private el: ElementRef) {
-   this.get_reqest_form = this.form_builder.group({
-     token: [null, Validators.requiredTrue],
-     request_id: [null, Validators.requiredTrue]
-   });
+              private router: Router) {
+    this.form_position = 0;
 
-   this.get_all_reqests_form = this.form_builder.group({
-     token: ['', Validators.requiredTrue]
-   });
+    this.requests_form = new FormGroup({
+      request_id: new FormControl(null, {validators: Validators.required})
+    });
 
-   this.get_passes_form = this.form_builder.group({
-     latitude: ['', Validators.requiredTrue],
-     longitude: ['', Validators.requiredTrue],
-     elevation_m: ['', Validators.requiredTrue],
-     aos_utc: ['', Validators.requiredTrue],
-     los_utc: ['', Validators.requiredTrue],
-   });
+    this.location_form = new FormGroup({
+      latitude: new FormControl(null, Validators.required),
+      longitude: new FormControl(null, Validators.required)
+    });
+
+    this.time_form = new FormGroup({
+      pass: new FormControl(0, Validators.required)
+    });
   }
 
   ngOnInit(): void {}
 
-  get_all_reqests(): void {
-    this.requests = this.ultra_service.get_all_requests();
-    console.log(this.requests);
+  get_one_reqest(): void {
+    // TODO: Finish this
   }
 
-  get_reqest(): void {}
-
   get_passes(): void {
-    const latitude = this.get_passes_form.get('latitude').value;
-    const longitude = this.get_passes_form.get('longitude').value;
-    console.log(`Getting passes for (${latitude}, ${longitude})`)
-    this.passes = this.ultra_service.get_passes(latitude, longitude);
+    const latitude = this.location_form.get('latitude').value;
+    const longitude = this.location_form.get('longitude').value;
 
-    console.log(`Available Passes: ${JSON.stringify(this.passes)}`)
-
-    const pass_form = this.el.nativeElement.querySelector('#pass-form');
-    const request_form = this.el.nativeElement.querySelector('#request-form');
-    pass_form.style.display = 'none';
-    request_form.style.display = 'block';
+    console.log(`Getting orbital passes for coords: (${latitude}, ${longitude})`);
+    this.ultra_service.get_passes(latitude, longitude).subscribe(
+      data => {
+        this.available_passes = data;
+        this.form_position = 1;
+      },
+      error => {
+        console.error(`Failed to retireve passes: ${error}`);
+        this.available_passes = [];
+      }
+    );
   }
 
   post_reqest(): void {
+    const latitude = this.location_form.get('latitude').value;
+    const longitude = this.location_form.get('longitude').value;
+    const form_time = this.time_form.get('pass').value;
+
+    var i = parseInt(form_time.split(' ')[0].split(':')[0]) - 1
+    const token = this.ultra_service.get_cached_token();
+    const pass = this.available_passes[i];
+
+    console.log(`Requested time: (${latitude}, ${longitude}) ${form_time}`);
+    this.ultra_service.post_request(token, pass).subscribe(
+      data => {
+        console.log(`Success: ${data}`)
+        this.router.navigate(['/']);
+      },
+      error => {
+        console.error(`Failed ot post new request: ${error}`);
+      }
+    );
   }
 }

@@ -14,6 +14,7 @@ import { RequestPage } from './components/request/request.component';
 import { RegistrationModel } from './components/registration-model/registration-model.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertQueue } from './components/alert/alert.component';
+import { RequestsTable } from './components/requests-table/requests-table.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AlertQueue } from './components/alert/alert.component';
     TelemetryTable,
     RequestPage,
     RegistrationModel,
-    AlertQueue
+    AlertQueue,
+    RequestsTable
   ],
   imports: [
     BrowserModule,

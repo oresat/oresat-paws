@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UltraService } from 'src/app/services/ultra.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'registration-modal',
@@ -12,24 +13,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegistrationModel implements OnInit {
   form: FormGroup;
   close_result: string;
-  register_btn: any;
-  hide_button: boolean = false;
+  show_button: boolean;
 
   constructor(private modal_service: NgbModal,
               private ultra_service: UltraService,
               private form_builder: FormBuilder,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private router: Router) {
     this.form = this.form_builder.group({
       username: ['', Validators.required]
     });
 
-    this.register_btn = this.el.nativeElement.querySelector('#registration-btn');
-    const token = this.ultra_service.fetch_token()
-
-    if(token !== null) {
-      console.log(`Browser has a token: ${token}`)
-      this.register_btn.style.display = 'none';
-    }
+    const token = this.ultra_service.get_cached_token();
+    this.show_button = token === '' || token === null || token === undefined;
   }
 
   ngOnInit(): void {}
@@ -42,6 +38,8 @@ export class RegistrationModel implements OnInit {
     const username = this.form.get('username').value;
     console.log(`Registering user: ${username}`);
     this.modal_service.dismissAll();
-    this.ultra_service.post_new_user(username);
+    this.ultra_service.post_user(username);
+    this.router.navigate(['/a'])
+    this.router.navigate(['/'])
   }
 }
