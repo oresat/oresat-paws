@@ -14,6 +14,7 @@ export class RequestsTable implements OnInit {
   constructor(private ultra_service: UltraService) {
     this.loaded = false;
   }
+
   ngOnInit(): void {
     const token = this.ultra_service.get_cached_token();
     this.ultra_service.get_all_requests(token).subscribe(
@@ -26,5 +27,21 @@ export class RequestsTable implements OnInit {
         console.error(`Failed to retrieve requests: ${error}`);
       }
     );
+  }
+
+  bool_to_status(is_approved: boolean): string {
+    if(is_approved === true) {
+      return 'Approved';
+    }
+    else if(is_approved === false) {
+      return 'Denied';
+    }
+    else {
+      return 'Pending';
+    }
+  }
+
+  edit_request() {
+    console.log(`Trying to edit request: ${1}`);
   }
 }

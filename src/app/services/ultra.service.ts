@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 export interface User {
   message: string,
-  user_id: string,
+  username: string,
   token: string
 }
 
@@ -20,8 +20,13 @@ export interface Pass {
 }
 
 export interface Request {
-  request_token: string,
-  pass_data: Pass
+  request_id: number,
+  is_approved: boolean,
+  is_sent: boolean,
+  pass_data: Pass,
+  created_date: Date,
+  updated_date: Date,
+  observation_type: string
 }
 
 export interface Telemetry {
@@ -63,10 +68,10 @@ export class UltraService {
 
   post_user(username: string): Observable<User> {
     const uri = `${environment.ultra_url}/user`;
-    const request = this.http.post<User> (uri, {user_id: username, observe: 'body'});
+    const request = this.http.post<User> (uri, {username: username, observe: 'body'});
     request.subscribe((data) => {
       this.cookie_service.set('token', data.token);
-      this.cookie_service.set('username', data.user_id);
+      this.cookie_service.set('username', data.username);
     });
     return request;
   }

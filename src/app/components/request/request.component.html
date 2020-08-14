@@ -7,10 +7,9 @@
 
   <ngb-tab title="Submit A Request">
     <ng-template ngbTabContent>
-      <div *ngIf="form_position == 0">
-        <h1>Where are you at?</h1>
-
+      <div class="card" *ngIf="form_position == 0">
         <form [formGroup]='location_form' (ngSubmit)='get_passes()'>
+          <h1>Where are you at?</h1>
           <label>
             Latitude:
             <input type="number" formControlName='latitude'>
@@ -21,18 +20,17 @@
             <input type="number" formControlName='longitude'>
           </label>
 
-          <input class="class=btn btn-primary" type="submit" value="Get available times">
+          <input class="btn btn-primary" type="submit" value="Get available times">
         </form>
       </div>
 
-      <div *ngIf="form_position == 1">
-        <h1>When would you like to see OreSat?</h1>
-
+      <div class="card" *ngIf="form_position == 1">
         <form [formGroup]='time_form' (ngSubmit)='post_reqest()'>
+          <h1>When would you like to see OreSat?</h1>
           <label>
-            Available Orbital Passes:
+            <p>Available Orbital Passes:</p>
 
-            <i>These are a list of times OreSat will be over your area.</i>
+            <p><i>These are a list of times OreSat will be over your area.</i></p>
             <select aria-labelledby="dropdownBasic1" formControlName='pass'>
               <option *ngFor="let pass of available_passes; let i = index">{{i + 1}}: {{pass.aos_utc | date: 'short'}} - {{ pass.los_utc | date: 'h:mm a' }}</option>
             </select>

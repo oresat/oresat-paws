@@ -2,24 +2,31 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th scope="col">Latitude</th>
-      <th scope="col">Longitude</th>
-      <th scope="col">Elevation</th>
+      <th scope="col">Request ID</th>
+      <th scope="col">Status</th>
+      <th scope="col">Sent</th>
+      <th scope="col">(lat, long, elev)</th>
       <th scope="col">AOS</th>
       <th scope="col">LOS</th>
-      <th scope="col">Approved</th>
-      <th scope="col">Sent</th>
+      <th></th>
     </tr>
     </thead>
 
     <tbody>
-    <tr *ngFor="let request of requests">
-      <td>{{ request.pass_data.latitude | number }}</td>
-      <td>{{ request.pass_data.longitude | number }}</td>
-      <td>{{ request.pass_data.elevation_m | number }}</td>
-      <td>{{ request.pass_data.aos_utc | date: 'long' }}</td>
-      <td>{{ request.pass_data.los_utc | date: 'long' }}</td>
-    </tr>
+      <tr *ngFor="let request of requests">
+        <td>{{ request.request_id }}</td>
+        <td>{{ bool_to_status(request.is_approved) }}</td>
+        <td>{{ request.is_sent}}</td>
+        <td>({{ request.pass_data.latitude | number }}, {{ request.pass_data.longitude | number }}, {{ request.pass_data.elevation_m | number }})</td>
+        <td>{{ request.pass_data.aos_utc | date: 'long' }}</td>
+        <td>{{ request.pass_data.los_utc | date: 'long' }}</td>
+        <td>
+          <select>
+            <option value="">Options</option>
+            <option value=""><button class="btn btn-outline-warning" (click)="edit_request()">Edit</button></option>
+          </select>
+        </td>
+      </tr>
     </tbody>
   </table>
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UltraService, Pass } from 'src/app/services/ultra.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'request-page',
@@ -18,8 +17,7 @@ export class RequestPage implements OnInit {
   available_passes: Array<Pass>;
 
 
-  constructor(private ultra_service: UltraService,
-              private router: Router) {
+  constructor(private ultra_service: UltraService) {
     this.form_position = 0;
 
     this.requests_form = new FormGroup({
@@ -72,7 +70,7 @@ export class RequestPage implements OnInit {
     this.ultra_service.post_request(token, pass).subscribe(
       data => {
         console.log(`Success: ${data}`)
-        this.router.navigate(['/']);
+        window.location.reload();
       },
       error => {
         console.error(`Failed ot post new request: ${error}`);
