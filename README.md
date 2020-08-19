@@ -1,27 +1,82 @@
-# OresatPaws
+# PAWS
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
+[![License](https://img.shields.io/github/license/oresat/oresat-paws)](./LICENSE)
+[![Trello](https://img.shields.io/badge/Trello-Backlog-blue)](https://trello.com/b/9VBVWS2I/mission-server-capstone)
+[![Node.js CI](https://img.shields.io/github/workflow/status/oresat/oresat-paws/Node.js%20CI?label=node.js%20ci)](https://github.com/oresat/oresat-paws/actions?query=workflow%3A%22Node.js+CI%22)
+[![Docker Build](https://img.shields.io/github/workflow/status/oresat/oresat-paws/Docker%20Image%20CI?label=docker%20build)](https://github.com/oresat/oresat-paws/actions?query=workflow%3A%22Docker+Image+CI%22)
+[![Issues](https://img.shields.io/github/issues/oresat/oresat-paws)](https://github.com/oresat/oresat-paws/issues)
 
-## Development server
+**Public Access Web Server**: An Angular 9 web-app that allows high-school students and spectators alike to book a time on [OreSat Live](https://oresat.org/mission)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+***
 
-## Code scaffolding
+# Development and Contribution
+
+## Installation
+
+`$` `npm install`
+
+## Run Development Server
+
+`$` `ng serve --open`
+
+This opens a webserver at `http://localhost:4200/`
+
+## Scaffold Code
+
+**Directive:**
+
+`$` `ng generate directive <name>`
+
+**Pipe:**
+
+`$` `ng generate pipe <name>`
+
+**Service:**
+
+`$` `ng generate service <name>`
+
+**Component:**
+
+`$` `ng generate component <name>`
+
+**Guard:**
+
+`$` `ng generate guard <name>`
+
+**Interface:**
+
+`$` `ng generate interface <name>`
+
+**Enum:**
+
+`$` `ng generate enum <name>`
+
+**Module:**
+
+`$` `ng generate module <name>`
+
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Build Website
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+`$` `ng build --prod`
 
-## Running unit tests
+This dumps the build contents into the `dist/` directory.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Run unit tests
+
+`$` `ng test`
+
+Unit tests use the [Karma](https://karma-runner.github.io) framework.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+`$` `ng e2e`
 
-## Further help
+End to end tests use the [Protractor](http://www.protractortest.org/) framework.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Submit an Issue
+
+Check out the [issue tracking board](https://github.com/oresat/oresat-paws/issues)
