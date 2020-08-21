@@ -39,8 +39,6 @@ endif
 		--name $(CONTAINER) \
 		--network=host \
 		--ipc=host \
-		--volume $(CERT_KEY):$(CERT_KEY) \
-		--volume $(CERT_PEM):$(CERT_PEM) \
 		$(IMAGE)
 
 deploy:
